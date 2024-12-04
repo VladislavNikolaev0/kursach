@@ -27,7 +27,7 @@ final class ChosenProjectController: NSViewController {
         return button
     }()
     
-    private let splitViewController = ProjectDetail()
+    private let splitViewController = ProjectSpitVeiw()
     
     override func viewDidLoad() {
         super.viewDidLoad()

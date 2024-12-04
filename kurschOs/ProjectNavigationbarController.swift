@@ -62,7 +62,6 @@ final class ProjectNavigationbarController: NSViewController {
         ])
     }
     
-    
     @objc
     private func editButtonTapped() {
         
