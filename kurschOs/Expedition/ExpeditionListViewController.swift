@@ -72,5 +72,19 @@ final class ExpeditionListViewController: NSViewController {
             testExpedition.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             testExpedition.heightAnchor.constraint(equalToConstant: 145),
         ])
+        
+        testExpedition.deleaget = self
     }
+}
+
+extension ExpeditionListViewController: ExpeditionCellDelegate {
+    
+    func dedSelectCell(_ cell: ExpeditionCell) {
+        let vc = ChosenExpeditionController()
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
+    }
+
 }

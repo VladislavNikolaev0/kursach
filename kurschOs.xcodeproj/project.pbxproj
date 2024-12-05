@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		C18F9E2D2CF349B100E8D393 /* kurschOs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kurschOs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C14949A22D01BCF500838D88 /* kurschOs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kurschOs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,16 +33,8 @@
 			isa = PBXGroup;
 			children = (
 				C18F9E2F2CF349B100E8D393 /* kurschOs */,
-				C18F9E2E2CF349B100E8D393 /* Products */,
+				C14949A22D01BCF500838D88 /* kurschOs.app */,
 			);
-			sourceTree = "<group>";
-		};
-		C18F9E2E2CF349B100E8D393 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C18F9E2D2CF349B100E8D393 /* kurschOs.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -67,7 +59,7 @@
 			packageProductDependencies = (
 			);
 			productName = kurschOs;
-			productReference = C18F9E2D2CF349B100E8D393 /* kurschOs.app */;
+			productReference = C14949A22D01BCF500838D88 /* kurschOs.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -95,7 +87,7 @@
 			mainGroup = C18F9E242CF349B100E8D393;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = C18F9E2E2CF349B100E8D393 /* Products */;
+			productRefGroup = C18F9E242CF349B100E8D393;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

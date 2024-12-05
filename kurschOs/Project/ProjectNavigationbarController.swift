@@ -64,7 +64,11 @@ final class ProjectNavigationbarController: NSViewController {
     
     @objc
     private func editButtonTapped() {
+        let vc = ChosenExpeditionController()
         
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
     }
     
     @objc
