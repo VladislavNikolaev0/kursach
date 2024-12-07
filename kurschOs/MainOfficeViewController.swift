@@ -16,6 +16,17 @@ class MainOfficeViewController: NSViewController {
         researcherText: "12",
         analysText: "2"
     )
+    
+    private lazy var backButton: NSButton = {
+        let button = NSButton()
+        button.image = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: nil)
+        button.bezelColor = NSColor.orange
+        button.target = self
+        button.action = #selector(backButtonTapped)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+ 
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +53,7 @@ class MainOfficeViewController: NSViewController {
     
     private func setupHierarchy() {
         view.addSubview(testProject)
+        view.addSubview(backButton)
         testProject.delegate = self
     }
     
@@ -51,7 +63,19 @@ class MainOfficeViewController: NSViewController {
             testProject.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 100),
             testProject.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -100),
             testProject.heightAnchor.constraint(equalToConstant: 145),
+            
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
         ])
+    }
+    
+    @objc
+    private func backButtonTapped() {
+        let vc = ChoiseInProjectContoller()
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
     }
 }
 

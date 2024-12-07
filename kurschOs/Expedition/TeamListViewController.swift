@@ -66,5 +66,18 @@ final class TeamListViewController: NSViewController {
             testTeam.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             testTeam.heightAnchor.constraint(equalToConstant: 100),
         ])
+        
+        testTeam.deleaget = self
+    }
+}
+
+extension TeamListViewController: TeamCellDelegate {
+    
+    func dedSelectCell(_ cell: TeamCell) {
+        let vc = ChosenTeamViewController()
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
     }
 }

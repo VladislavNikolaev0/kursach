@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Accountant" representedClassName="Accountant" syncable="YES" codeGenerationType="class">
+        <attribute name="birthDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="position" optional="YES" attributeType="String"/>
+        <relationship name="accountantToPassport" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Passport" inverseName="passportToAccountant" inverseEntity="Passport"/>
+        <relationship name="accountantToTeam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Team" inverseName="teamToAccountant" inverseEntity="Team"/>
+    </entity>
+    <entity name="Analitical" representedClassName="Analitical" syncable="YES" codeGenerationType="class">
+        <attribute name="analiticType" optional="YES" attributeType="String"/>
+        <attribute name="mainGoal" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="analiticalToAnaliticalResults" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AnaliticalResults" inverseName="analiticalResultsToAnalitical" inverseEntity="AnaliticalResults"/>
+        <relationship name="analiticalToModel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Model" inverseName="modelToAnalitical" inverseEntity="Model"/>
+        <relationship name="analiticalToProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="projectToAnalitical" inverseEntity="Project"/>
+        <relationship name="analiticalToTeam" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Team" inverseName="teamToAnalitical" inverseEntity="Team"/>
+    </entity>
+    <entity name="AnaliticalResults" representedClassName="AnaliticalResults" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="results" optional="YES" attributeType="String"/>
+        <relationship name="analiticalResultsToAnalitical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analitical" inverseName="analiticalToAnaliticalResults" inverseEntity="Analitical"/>
+    </entity>
+    <entity name="Analyst" representedClassName="Analyst" syncable="YES" codeGenerationType="class">
+        <attribute name="birthDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="position" optional="YES" attributeType="String"/>
+        <relationship name="analystToPassport" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Passport" inverseName="passportToAnalyst" inverseEntity="Passport"/>
+        <relationship name="analystToTeam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Team" inverseName="teamToAnalist" inverseEntity="Team"/>
+    </entity>
+    <entity name="Equpment" representedClassName="Equpment" syncable="YES" codeGenerationType="class">
+        <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="weight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="equpmentToExpediton" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Expedition" inverseName="expeditionToEqupment" inverseEntity="Expedition"/>
+    </entity>
+    <entity name="Expedition" representedClassName="Expedition" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expeditionName" optional="YES" attributeType="String"/>
+        <attribute name="expeditionType" optional="YES" attributeType="String"/>
+        <attribute name="mainGoal" optional="YES" attributeType="String"/>
+        <attribute name="path" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="expeditionToEqupment" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Equpment" inverseName="equpmentToExpediton" inverseEntity="Equpment"/>
+        <relationship name="expeditionToExpeditonResults" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ExpeditionResults" inverseName="expeditionRusltsToExpedition" inverseEntity="ExpeditionResults"/>
+        <relationship name="expeditionToProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="projectToExpedition" inverseEntity="Project"/>
+        <relationship name="expeditionToTeam" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Team" inverseName="teamToExpedition" inverseEntity="Team"/>
+        <relationship name="expeditionToVehicle" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Vehicle" inverseName="vehicleToExpedition" inverseEntity="Vehicle"/>
+    </entity>
+    <entity name="ExpeditionResults" representedClassName="ExpeditionResults" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="path" optional="YES" attributeType="String"/>
+        <attribute name="results" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="expeditionResultsToModel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Model" inverseName="modelToExpeditionResults" inverseEntity="Model"/>
+        <relationship name="expeditionRusltsToExpedition" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Expedition" inverseName="expeditionToExpeditonResults" inverseEntity="Expedition"/>
+    </entity>
+    <entity name="FinanceModule" representedClassName="FinanceModule" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="financeModuleToProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="projectToFinanceModule" inverseEntity="Project"/>
+        <relationship name="financeModuleToReport" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Report" inverseName="reportToFinanceModule" inverseEntity="Report"/>
+        <relationship name="financeToTeam" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Team" inverseName="teamToFinanceModule" inverseEntity="Team"/>
+    </entity>
+    <entity name="MedecineCard" representedClassName="MedecineCard" syncable="YES" codeGenerationType="class">
+        <attribute name="allergies" optional="YES" attributeType="String"/>
+        <attribute name="chronicDeseases" optional="YES" attributeType="String"/>
+        <attribute name="heightPerson" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="medecineCheckup" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="weightPerson" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="medecineCardToResearcher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Researcher" inverseName="researcherToMedecineCard" inverseEntity="Researcher"/>
+    </entity>
+    <entity name="Model" representedClassName="Model" syncable="YES" codeGenerationType="class">
+        <attribute name="descriptionModel" optional="YES" attributeType="String"/>
+        <attribute name="model" optional="YES" attributeType="String"/>
+        <relationship name="modelToAnalitical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analitical" inverseName="analiticalToModel" inverseEntity="Analitical"/>
+        <relationship name="modelToExpeditionResults" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpeditionResults" inverseName="expeditionResultsToModel" inverseEntity="ExpeditionResults"/>
+    </entity>
+    <entity name="Passport" representedClassName="Passport" syncable="YES" codeGenerationType="class">
+        <attribute name="issuedBy" optional="YES" attributeType="String"/>
+        <attribute name="issuedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="number" optional="YES" attributeType="String"/>
+        <relationship name="passportToAccountant" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Accountant" inverseName="accountantToPassport" inverseEntity="Accountant"/>
+        <relationship name="passportToAnalyst" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analyst" inverseName="analystToPassport" inverseEntity="Analyst"/>
+        <relationship name="passportToResearcher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Researcher" inverseName="researcherToPassport" inverseEntity="Researcher"/>
+    </entity>
+    <entity name="Project" representedClassName="Project" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="mainGoal" optional="YES" attributeType="String"/>
+        <attribute name="startData" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="projectToAnalitical" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Analitical" inverseName="analiticalToProject" inverseEntity="Analitical"/>
+        <relationship name="projectToExpedition" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Expedition" inverseName="expeditionToProject" inverseEntity="Expedition"/>
+        <relationship name="projectToFinanceModule" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FinanceModule" inverseName="financeModuleToProject" inverseEntity="FinanceModule"/>
+        <relationship name="projectToProjectResults" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ProjectResults" inverseName="projectResutlsToProject" inverseEntity="ProjectResults"/>
+        <relationship name="userToProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="userToProject" inverseEntity="User"/>
+    </entity>
+    <entity name="ProjectResults" representedClassName="ProjectResults" syncable="YES" codeGenerationType="class">
+        <attribute name="analiticResults" optional="YES" attributeType="String"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expeditionResults" optional="YES" attributeType="String"/>
+        <attribute name="financeResults" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="projectResutlsToProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="projectToProjectResults" inverseEntity="Project"/>
+    </entity>
+    <entity name="Report" representedClassName="Report" syncable="YES" codeGenerationType="class">
+        <attribute name="report" optional="YES" attributeType="String"/>
+        <relationship name="reportToFinanceModule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FinanceModule" inverseName="financeModuleToReport" inverseEntity="FinanceModule"/>
+    </entity>
+    <entity name="Researcher" representedClassName="Researcher" syncable="YES" codeGenerationType="class">
+        <attribute name="birthDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="driveLecence" optional="YES" attributeType="String"/>
+        <attribute name="fisrtName" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="position" optional="YES" attributeType="String"/>
+        <relationship name="researcherToMedecineCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MedecineCard" inverseName="medecineCardToResearcher" inverseEntity="MedecineCard"/>
+        <relationship name="researcherToPassport" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Passport" inverseName="passportToResearcher" inverseEntity="Passport"/>
+        <relationship name="researcherToTeam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Team" inverseName="teamToResearcher" inverseEntity="Team"/>
+    </entity>
+    <entity name="Team" representedClassName="Team" syncable="YES" codeGenerationType="class">
+        <attribute name="teamName" optional="YES" attributeType="String"/>
+        <attribute name="teamType" optional="YES" attributeType="String"/>
+        <relationship name="teamToAccountant" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Accountant" inverseName="accountantToTeam" inverseEntity="Accountant"/>
+        <relationship name="teamToAnalist" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Analyst" inverseName="analystToTeam" inverseEntity="Analyst"/>
+        <relationship name="teamToAnalitical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Analitical" inverseName="analiticalToTeam" inverseEntity="Analitical"/>
+        <relationship name="teamToExpedition" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Expedition" inverseName="expeditionToTeam" inverseEntity="Expedition"/>
+        <relationship name="teamToFinanceModule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FinanceModule" inverseName="financeToTeam" inverseEntity="FinanceModule"/>
+        <relationship name="teamToResearcher" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Researcher" inverseName="researcherToTeam" inverseEntity="Researcher"/>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="fistName" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="login" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <relationship name="userToProject" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Project" inverseName="userToProject" inverseEntity="Project"/>
+    </entity>
+    <entity name="Vehicle" representedClassName="Vehicle" syncable="YES" codeGenerationType="class">
+        <attribute name="capacity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lecenceCategory" optional="YES" attributeType="String"/>
+        <attribute name="model" optional="YES" attributeType="String"/>
+        <attribute name="passengers" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="registerNumber" optional="YES" attributeType="String"/>
+        <attribute name="transportType" optional="YES" attributeType="String"/>
+        <relationship name="vehicleToExpedition" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Expedition" inverseName="expeditionToVehicle" inverseEntity="Expedition"/>
+    </entity>
+</model>

@@ -35,6 +35,16 @@ final class ExpeditionNavigationController: NSViewController {
         return field
     }()
     
+    private lazy var backButton: NSButton = {
+        let button = NSButton()
+        button.image = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: nil)
+        button.bezelColor = NSColor.orange
+        button.target = self
+        button.action = #selector(backButtonTapped)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,6 +60,7 @@ final class ExpeditionNavigationController: NSViewController {
         view.addSubview(expeditonName)
         view.addSubview(editButton)
         view.addSubview(deleteButton)
+        view.addSubview(backButton)
     }
     
     private func setupConstraints() {
@@ -64,6 +75,10 @@ final class ExpeditionNavigationController: NSViewController {
             editButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
             editButton.trailingAnchor.constraint(equalTo: deleteButton.leadingAnchor, constant: -5),
             editButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
+            
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
+            backButton.trailingAnchor.constraint(equalTo: editButton.leadingAnchor, constant: -5),
+            backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
         ])
     }
     
@@ -75,5 +90,14 @@ final class ExpeditionNavigationController: NSViewController {
     @objc
     private func deleteButtonTapped() {
         
+    }
+    
+    @objc
+    private func backButtonTapped() {
+        let vc = ProjectSpitVeiw()
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
     }
 }

@@ -27,6 +27,16 @@ final class ProjectNavigationbarController: NSViewController {
         return button
     }()
     
+    private lazy var backButton: NSButton = {
+        let button = NSButton()
+        button.image = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: nil)
+        button.bezelColor = NSColor.orange
+        button.target = self
+        button.action = #selector(backButtonTapped)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     var swicher: ProjectContentProtocol?
     
     override func viewDidLoad() {
@@ -48,6 +58,7 @@ final class ProjectNavigationbarController: NSViewController {
     private func setupHierarchy() {
         view.addSubview(editButton)
         view.addSubview(deleteButton)
+        view.addSubview(backButton)
     }
     
     private func setupConstraints() {
@@ -59,6 +70,10 @@ final class ProjectNavigationbarController: NSViewController {
             editButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
             editButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
             editButton.trailingAnchor.constraint(equalTo: deleteButton.leadingAnchor, constant: -5),
+            
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5),
         ])
     }
     
@@ -74,5 +89,14 @@ final class ProjectNavigationbarController: NSViewController {
     @objc
     private func deleteButtonTapped() {
         
+    }
+    
+    @objc
+    private func backButtonTapped() {
+        let vc = MainOfficeViewController()
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
     }
 }
