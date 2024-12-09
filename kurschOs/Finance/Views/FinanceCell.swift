@@ -14,6 +14,7 @@ protocol FinanceCellDelegate: AnyObject {
 final class FinanceCell: NSView {
     
     weak var deleaget: FinanceCellDelegate?
+    var finance: FinanceModule?
     
     private lazy var startDate: NSTextField = {
         let field = NSTextField(wrappingLabelWithString: "Дата начала: ")

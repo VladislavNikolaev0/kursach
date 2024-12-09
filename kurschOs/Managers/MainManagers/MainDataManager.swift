@@ -13,6 +13,9 @@ final class MainDataManager {
     
     var user: User?
     var project: Project?
+    var expedtion: Expedition?
+    var analitic: Analitical?
+    var finance: FinanceModule?
     
     private init() {}
     

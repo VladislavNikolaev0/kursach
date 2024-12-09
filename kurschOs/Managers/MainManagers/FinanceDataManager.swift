@@ -15,12 +15,13 @@ final class FinanceDataManager {
     
     private init() {}
     
-    func createExpedition(startDate: Date, endDate: Date) {
+    func createExpedition(startDate: Date, endDate: Date, project: Project) {
         
         let fiance = FinanceModule(context: context)
         
         fiance.startDate = startDate
         fiance.endDate = endDate
+        fiance.financeModuleToProject = project
         
         MainDataManager.shared.saveContext()
     }

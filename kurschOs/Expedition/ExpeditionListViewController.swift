@@ -135,9 +135,9 @@ final class ExpeditionListViewController: NSViewController {
     @objc
     private func addExpeditionButtonTapped() {
         let vc = CreateExpeditionViewController()
-        print("1")
+
         guard let project = MainDataManager.shared.project else { return }
-        print("2")
+
         vc.project = project
         vc.delegate = self
         
@@ -149,6 +149,8 @@ extension ExpeditionListViewController: ExpeditionCellDelegate {
     
     func dedSelectCell(_ cell: ExpeditionCell) {
         let vc = ChosenExpeditionController()
+        
+        MainDataManager.shared.expedtion = cell.expedition
         
         guard let window = self.view.window else { return }
         

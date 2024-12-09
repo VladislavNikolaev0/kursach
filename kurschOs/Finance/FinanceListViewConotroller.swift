@@ -9,10 +9,17 @@ import Cocoa
 
 final class FinanceListViewController: NSViewController {
     
-    private lazy var testFinance = FinanceCell(
-        startDate: "12.12.24",
-        endDate: "12.12.25"
-    )
+    private var finances: [FinanceModule] = []
+    
+    private lazy var addFinanceButton: NSButton = {
+        let button = NSButton()
+        button.image = NSImage(systemSymbolName: "plus", accessibilityDescription: nil)
+        button.bezelColor = NSColor.systemGreen
+        button.target = self
+        button.action = #selector(addFinanceButtonTapped)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     private lazy var verticalScrollView: NSScrollView = {
         let scroll = NSScrollView()
@@ -37,18 +44,22 @@ final class FinanceListViewController: NSViewController {
     private func setupUI() {
         setupHierarchy()
         setupConstraints()
-        addCell()
+        fetchFinances()
     }
     
     private func setupHierarchy() {
         view.addSubview(verticalScrollView)
+        view.addSubview(addFinanceButton)
         verticalScrollView.documentView = contentView
-        view.addSubview(testFinance)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            verticalScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            
+            addFinanceButton.topAnchor.constraint(equalTo: view.topAnchor),
+            addFinanceButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            
+            verticalScrollView.topAnchor.constraint(equalTo: addFinanceButton.bottomAnchor, constant: 5),
             verticalScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             verticalScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             verticalScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -60,14 +71,83 @@ final class FinanceListViewController: NSViewController {
         ])
     }
     
-    private func addCell() {
-        contentView.addSubview(testFinance)
+    private func fetchFinances() {
         
-        NSLayoutConstraint.activate([
-            testFinance.topAnchor.constraint(equalTo: contentView.topAnchor),
-            testFinance.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-            testFinance.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            testFinance.heightAnchor.constraint(equalToConstant: 45),
-        ])
+        guard let project = MainDataManager.shared.project else { return }
+        
+        finances = FinanceDataManager.shared.fetchAllFinanceByProject(project: project)
+        
+        if !finances.isEmpty {
+            
+            var newCellFinance = FinanceCell(
+                startDate: "\(finances[0].startDate!)",
+                endDate: "\(finances[0].endDate!)"
+            )
+            
+            newCellFinance.deleaget = self
+            newCellFinance.finance = finances[0]
+            
+            contentView.addSubview(newCellFinance)
+            
+            NSLayoutConstraint.activate([
+                
+                newCellFinance.topAnchor.constraint(equalTo: contentView.topAnchor),
+                newCellFinance.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                newCellFinance.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                newCellFinance.heightAnchor.constraint(equalToConstant: 50),
+            ])
+            
+            if finances.count > 1 {
+                
+                for i in 1..<finances.count {
+                    
+                    let cellFinance = FinanceCell(
+                        startDate: "\(finances[i].startDate!)",
+                        endDate: "\(finances[i].endDate!)"
+                    )
+                    
+                    cellFinance.deleaget = self
+                    cellFinance.finance = finances[i]
+                    
+                    contentView.addSubview(cellFinance)
+                    
+                    NSLayoutConstraint.activate([
+                        
+                        cellFinance.topAnchor.constraint(equalTo: newCellFinance.bottomAnchor),
+                        cellFinance.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                        cellFinance.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                        cellFinance.heightAnchor.constraint(equalToConstant: 50),
+                    ])
+                    
+                    newCellFinance = cellFinance
+                }
+            }
+        }
+    }
+    
+    @objc
+    private func addFinanceButtonTapped() {
+        let vc = CreateFinanceViewController()
+
+        guard let project = MainDataManager.shared.project else { return }
+
+        vc.project = project
+        vc.delegate = self
+        
+        self.presentAsModalWindow(vc)
+    }
+}
+
+extension FinanceListViewController: FinanceCellDelegate {
+    
+    func dedSelectCell(_ cell: FinanceCell) {
+        
+    }
+}
+
+extension FinanceListViewController: ModalDismissProtocol {
+    
+    func modalDismiss() {
+        fetchFinances()
     }
 }

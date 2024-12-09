@@ -14,16 +14,10 @@ protocol AnaliticCellDelegate: AnyObject {
 final class AnaliticCell: NSView {
     
     weak var deleaget: AnaliticCellDelegate?
+    var analitic: Analitical?
     
     private lazy var startDate: NSTextField = {
         let field = NSTextField(wrappingLabelWithString: "Дата начала: ")
-        field.alignment = .right
-        field.translatesAutoresizingMaskIntoConstraints = false
-        return field
-    }()
-    
-    private lazy var endDate: NSTextField = {
-        let field = NSTextField(wrappingLabelWithString: "Дата окончания: ")
         field.alignment = .right
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
@@ -77,11 +71,10 @@ final class AnaliticCell: NSView {
         return stack
     }()
     
-    init(startDate: String, endDate: String, type: String, mainGoal: String) {
+    init(startDate: String, type: String, mainGoal: String) {
         super.init(frame: .zero)
         
         self.startDate.stringValue += startDate
-        self.endDate.stringValue += endDate
         self.type.stringValue += type
         self.mainGoal.stringValue = mainGoal
         
@@ -119,7 +112,6 @@ final class AnaliticCell: NSView {
         infoStack.addArrangedSubview(goal)
         infoStack.addArrangedSubview(mainGoal)
         dateStack.addArrangedSubview(startDate)
-        dateStack.addArrangedSubview(endDate)
     }
     
     private func setupConstraints() {

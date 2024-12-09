@@ -15,13 +15,14 @@ final class AnaliticDataManager {
     
     private init() {}
     
-    func createAnalitic(startDate: Date, mainGoal: String, analiticType: String) {
+    func createAnalitic(startDate: Date, mainGoal: String, analiticType: String, project: Project) {
         
         let analitic = Analitical(context: context)
         
         analitic.startDate = startDate
         analitic.mainGoal = mainGoal
         analitic.analiticType = analiticType
+        analitic.analiticalToProject = project
         
         MainDataManager.shared.saveContext()
     }
@@ -29,7 +30,7 @@ final class AnaliticDataManager {
     func fetchAllAnaliticByProject(project: Project) ->  [Analitical] {
         
         let request: NSFetchRequest<Analitical> = Analitical.fetchRequest()
-        request.predicate = NSPredicate(format: "expeditionToProject == %@", project)
+        request.predicate = NSPredicate(format: "analiticalToProject == %@", project)
         
         do {
             return try context.fetch(request)
@@ -42,7 +43,7 @@ final class AnaliticDataManager {
     func fetchAnalitical(project: Project, mainGoal: String) -> Analitical? {
         
         let request: NSFetchRequest<Analitical> = Analitical.fetchRequest()
-        request.predicate = NSPredicate(format: "expeditionToProject == %@ AND mainGoal == %@", project, mainGoal)
+        request.predicate = NSPredicate(format: "analiticalToProject == %@ AND mainGoal == %@", project, mainGoal)
         
         do {
             return try context.fetch(request).first
@@ -55,7 +56,7 @@ final class AnaliticDataManager {
     func updateAnalitical(project: Project, mainGoal: String, startDate: Date, analiticType: String) {
         
         let request: NSFetchRequest<Analitical> = Analitical.fetchRequest()
-        request.predicate = NSPredicate(format: "expeditionToProject == %@ AND mainGoal == %@", project, mainGoal)
+        request.predicate = NSPredicate(format: "analiticalToProject == %@ AND mainGoal == %@", project, mainGoal)
         
         do {
             let analitic: Analitical? = try context.fetch(request).first

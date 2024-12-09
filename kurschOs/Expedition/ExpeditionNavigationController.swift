@@ -9,9 +9,12 @@ import Cocoa
 
 final class ExpeditionNavigationController: NSViewController {
     
+    private var expedition: Expedition? = MainDataManager.shared.expedtion
+    
     private lazy var editButton: NSButton = {
         let button = NSButton()
         button.image = NSImage(systemSymbolName: "pencil", accessibilityDescription: nil)
+        button.bezelColor = NSColor.systemBlue
         button.target = self
         button.action = #selector(editButtonTapped)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -21,6 +24,7 @@ final class ExpeditionNavigationController: NSViewController {
     private lazy var deleteButton: NSButton = {
         let button = NSButton()
         button.image = NSImage(systemSymbolName: "trash", accessibilityDescription: nil)
+        button.bezelColor = NSColor.systemRed
         button.target = self
         button.action = #selector(deleteButtonTapped)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +32,7 @@ final class ExpeditionNavigationController: NSViewController {
     }()
     
     private lazy var expeditonName: NSTextField = {
-        let field = NSTextField(wrappingLabelWithString: "Test")
+        let field = NSTextField(wrappingLabelWithString: expedition!.expeditionName!)
         field.font = NSFont.systemFont(ofSize: 20, weight: .heavy)
         field.alignment = .left
         field.translatesAutoresizingMaskIntoConstraints = false
