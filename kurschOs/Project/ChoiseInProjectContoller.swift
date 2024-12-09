@@ -9,6 +9,9 @@ import Cocoa
 
 final class ChoiseInProjectContoller: NSViewController {
     
+    private let nextVC = MainOfficeViewController()
+    private var isLogged = false
+    
     private lazy var mainButton: NSButton = {
         let button = NSButton()
         button.title = "Главный офис"
@@ -63,6 +66,21 @@ final class ChoiseInProjectContoller: NSViewController {
         
     }
     
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        if !isLogged {
+            let vc = AuthorisationViewController()
+            vc.delegate = nextVC
+            
+            self.presentAsSheet(vc)
+        } 
+    }
+    
+    public func setIsLogged(isLogged: Bool) {
+        self.isLogged = isLogged
+    }
+    
     private func setupUI() {
         setupHierarchy()
         setupConstraints()
@@ -96,11 +114,10 @@ final class ChoiseInProjectContoller: NSViewController {
     
     @objc
     private func mainButtonTapped() {
-        let vc = MainOfficeViewController()
         
         guard let window = self.view.window else { return }
         
-        window.contentViewController = vc
+        window.contentViewController = nextVC
     }
     
     @objc

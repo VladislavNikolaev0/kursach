@@ -7,15 +7,19 @@
 
 import Cocoa
 
+protocol GetUserProtocol: AnyObject {
+    func broadcastUser(user: User)
+}
+
+
+protocol ModalDismissProtocol: AnyObject {
+    func modalDismiss()
+}
+
 class MainOfficeViewController: NSViewController {
     
-    private lazy var testProject = ProjectCellView(
-        mainGoalText: "Try firs project",
-        startDateText: "12.12.24",
-        endDateText: "12.12.25",
-        researcherText: "12",
-        analysText: "2"
-    )
+    private var user: User? = MainDataManager.shared.user
+    private var projects: [Project] = []
     
     private lazy var backButton: NSButton = {
         let button = NSButton()
@@ -26,16 +30,66 @@ class MainOfficeViewController: NSViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    private lazy var infoView: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.systemGray.cgColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var infoUser: NSTextField = {
+        let field = NSTextField(wrappingLabelWithString: "Добро пожаловать, ")
+        field.alignment = .left
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
+    private lazy var emailLable: NSTextField = {
+        let field = NSTextField(wrappingLabelWithString: "")
+        field.alignment = .right
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
+    private lazy var addProjectButton: NSButton = {
+        let button = NSButton()
+        button.image = NSImage(systemSymbolName: "plus", accessibilityDescription: nil)
+        button.bezelColor = NSColor.systemGreen
+        button.target = self
+        button.action = #selector(addProjectButtonTapped)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var exitButton: NSButton = {
+        let button = NSButton()
+        button.image = NSImage(systemSymbolName: "door.left.hand.open", accessibilityDescription: nil)
+        button.bezelColor = .systemRed
+        button.target = self
+        button.action = #selector(exitButtonTapped)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var verticalSrcollView: NSScrollView = {
+        let scroll = NSScrollView()
+        scroll.hasVerticalScroller = true
+        scroll.hasHorizontalScroller = false
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
+    }()
+    
+    private lazy var contentView: NSView = {
+        let view = NSView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
  
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view = NSView(frame: NSRect(
-            x: 0,
-            y: 0,
-            width: 1200,
-            height: 600))
         
         setupUI()
     }
@@ -47,30 +101,147 @@ class MainOfficeViewController: NSViewController {
     }
 
     private func setupUI() {
+        configure()
         setupHierarchy()
         setupConstraints()
+        fetchPojects()
+    }
+    
+    private func configure() {
+        view = NSView(frame: NSRect(
+            x: 0,
+            y: 0,
+            width: 1200,
+            height: 600))
+        
+        guard let user = self.user else { return }
+        
+        infoUser.stringValue += user.fistName! + " " + user.lastName!
+        emailLable.stringValue = user.email!
     }
     
     private func setupHierarchy() {
-        view.addSubview(testProject)
-        view.addSubview(backButton)
-        testProject.delegate = self
+        view.addSubview(infoView)
+        view.addSubview(verticalSrcollView)
+        infoView.addSubview(backButton)
+        infoView.addSubview(addProjectButton)
+        infoView.addSubview(exitButton)
+        infoView.addSubview(infoUser)
+        infoView.addSubview(emailLable)
+        verticalSrcollView.documentView = contentView
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            testProject.topAnchor.constraint(equalTo: view.topAnchor),
-            testProject.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 100),
-            testProject.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -100),
-            testProject.heightAnchor.constraint(equalToConstant: 145),
+            infoView.topAnchor.constraint(equalTo: view.topAnchor),
+            infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            infoView.heightAnchor.constraint(equalToConstant: 30),
             
-            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
-            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            verticalSrcollView.topAnchor.constraint(equalTo: infoView.bottomAnchor),
+            verticalSrcollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 100),
+            verticalSrcollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -100),
+            verticalSrcollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: verticalSrcollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: verticalSrcollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: verticalSrcollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: verticalSrcollView.bottomAnchor),
+            
+            backButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 5),
+            backButton.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 5),
+            
+            addProjectButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 5),
+            addProjectButton.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 5),
+            
+            infoUser.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -5),
+            infoUser.leadingAnchor.constraint(equalTo: addProjectButton.trailingAnchor, constant: 10),
+            
+            exitButton.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 5),
+            exitButton.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -5),
+            
+            emailLable.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -5),
+            emailLable.trailingAnchor.constraint(equalTo: exitButton.leadingAnchor, constant: -10),
         ])
+    }
+    
+    func fetchPojects() {
+        
+        guard let user = user else { return }
+        
+        projects = ProjectDataManager.shared.fetchAllProjectsByUser(user: user)
+        
+        if !projects.isEmpty {
+            
+            var newCellProject = ProjectCellView(
+                mainGoalText: projects[0].mainGoal!,
+                startDateText: "\(projects[0].startData!)",
+                endDateText: "\(projects[0].endDate!)"
+            )
+            
+            newCellProject.delegate = self
+            
+            contentView.addSubview(newCellProject)
+            
+            NSLayoutConstraint.activate([
+                
+                newCellProject.topAnchor.constraint(equalTo: contentView.topAnchor),
+                newCellProject.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                newCellProject.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                newCellProject.heightAnchor.constraint(equalToConstant: 85),
+            ])
+            
+            if projects.count > 1 {
+                
+                for i in 1..<projects.count {
+                    
+                    let cellProject = ProjectCellView(
+                        mainGoalText: projects[i].mainGoal!,
+                        startDateText: "\(projects[i].startData!)",
+                        endDateText: "\(projects[i].endDate!)"
+                    )
+                    
+                    cellProject.delegate = self
+                    
+                    contentView.addSubview(cellProject)
+                    
+                    NSLayoutConstraint.activate([
+                        cellProject.topAnchor.constraint(equalTo: newCellProject.bottomAnchor),
+                        cellProject.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                        cellProject.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                        cellProject.heightAnchor.constraint(equalToConstant: 85),
+                    ])
+                    
+                    newCellProject = cellProject
+                }
+            }
+        }
     }
     
     @objc
     private func backButtonTapped() {
+        let vc = ChoiseInProjectContoller()
+        vc.setIsLogged(isLogged: true)
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
+    }
+    
+    @objc
+    private func addProjectButtonTapped() {
+        let vc = CreateProjectViewController()
+        
+        guard let user = user else { return }
+        
+        vc.setUser(user: user)
+        vc.delegate = self
+        
+        self.presentAsModalWindow(vc)
+    }
+    
+    @objc
+    private func exitButtonTapped() {
         let vc = ChoiseInProjectContoller()
         
         guard let window = self.view.window else { return }
@@ -89,5 +260,19 @@ extension MainOfficeViewController: ProjectCellViewDelegate {
         window.contentViewController = vc
     }
     
+}
+
+extension MainOfficeViewController: GetUserProtocol {
+    
+    func broadcastUser(user: User) {
+        self.user = user
+    }
+}
+
+extension MainOfficeViewController: ModalDismissProtocol {
+    
+    func modalDismiss() {
+        fetchPojects()
+    }
 }
 

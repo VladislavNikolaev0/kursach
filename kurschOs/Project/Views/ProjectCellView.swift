@@ -36,19 +36,19 @@ final class ProjectCellView: NSView {
         return field
     }()
     
-    private lazy var numberResearchesTeam: NSTextField = {
-        let field = NSTextField(wrappingLabelWithString: "Team number: ")
-        field.alignment = .right
-        field.translatesAutoresizingMaskIntoConstraints = false
-        return field
-    }()
-    
-    private lazy var numberAnalystTeam: NSTextField = {
-        let field = NSTextField(wrappingLabelWithString: "Team number: ")
-        field.alignment = .right
-        field.translatesAutoresizingMaskIntoConstraints = false
-        return field
-    }()
+//    private lazy var numberResearchesTeam: NSTextField = {
+//        let field = NSTextField(wrappingLabelWithString: "Team number: ")
+//        field.alignment = .right
+//        field.translatesAutoresizingMaskIntoConstraints = false
+//        return field
+//    }()
+//    
+//    private lazy var numberAnalystTeam: NSTextField = {
+//        let field = NSTextField(wrappingLabelWithString: "Team number: ")
+//        field.alignment = .right
+//        field.translatesAutoresizingMaskIntoConstraints = false
+//        return field
+//    }()
     
     private lazy var commonStack: NSStackView = {
         let stack = NSStackView()
@@ -77,14 +77,14 @@ final class ProjectCellView: NSView {
         return stack
     }()
     
-    init(mainGoalText: String, startDateText: String, endDateText: String, researcherText: String, analysText: String) {
+    init(mainGoalText: String, startDateText: String, endDateText: String) { //researcherText: String, analysText: String) {
         super.init(frame: .zero)
         
         self.mainGoal.stringValue += mainGoalText
         self.startDate.stringValue += startDateText
         self.endDate.stringValue += endDateText
-        self.numberResearchesTeam.stringValue += researcherText
-        self.numberAnalystTeam.stringValue += analysText
+//        self.numberResearchesTeam.stringValue += researcherText
+//        self.numberAnalystTeam.stringValue += analysText
         
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -106,8 +106,8 @@ final class ProjectCellView: NSView {
         commonStack.addArrangedSubview(infoStack)
         commonStack.addArrangedSubview(dateStack)
         infoStack.addArrangedSubview(mainGoal)
-        infoStack.addArrangedSubview(numberResearchesTeam)
-        infoStack.addArrangedSubview(numberAnalystTeam)
+//        infoStack.addArrangedSubview(numberResearchesTeam)
+//        infoStack.addArrangedSubview(numberAnalystTeam)
         dateStack.addArrangedSubview(startDate)
         dateStack.addArrangedSubview(endDate)
     }
@@ -121,7 +121,7 @@ final class ProjectCellView: NSView {
             
             infoStack.topAnchor.constraint(equalTo: commonStack.topAnchor, constant: 10),
             infoStack.leadingAnchor.constraint(equalTo: commonStack.leadingAnchor, constant: 10),
-            infoStack.heightAnchor.constraint(equalToConstant: 100),
+            infoStack.heightAnchor.constraint(equalToConstant: 50),
             
             dateStack.bottomAnchor.constraint(equalTo: commonStack.bottomAnchor, constant: -10),
             dateStack.trailingAnchor.constraint(equalTo: commonStack.trailingAnchor, constant: -10),
