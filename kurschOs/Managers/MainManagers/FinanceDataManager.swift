@@ -38,10 +38,10 @@ final class FinanceDataManager {
         }
     }
     
-    func fetchFinance(project: Project, hash: Int) -> FinanceModule? {
+    func fetchFinance(project: Project, startDate: Date) -> FinanceModule? {
         
         let request: NSFetchRequest<FinanceModule> = FinanceModule.fetchRequest()
-        request.predicate = NSPredicate(format: "financeModuleToProject == %@ AND hash == %@", project,  hash)
+        request.predicate = NSPredicate(format: "financeModuleToProject == %@ AND startDate == %@", project,  startDate as NSDate)
         
         do {
             return try context.fetch(request).first
@@ -51,10 +51,10 @@ final class FinanceDataManager {
         }
     }
     
-    func updateFinance(project: Project, hash: Int, startDate: Date, endDate: Date) {
+    func updateFinance(project: Project, startDate: Date, endDate: Date) {
         
         let request: NSFetchRequest<FinanceModule> = FinanceModule.fetchRequest()
-        request.predicate = NSPredicate(format: "financeModuleToProject == %@ AND hash == %@", project, hash)
+        request.predicate = NSPredicate(format: "financeModuleToProject == %@ AND startDate == %@", project, startDate as NSDate)
         
         do {
             let finance: FinanceModule? = try context.fetch(request).first

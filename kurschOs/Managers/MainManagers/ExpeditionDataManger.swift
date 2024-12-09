@@ -15,7 +15,7 @@ final class ExpeditionDataManger {
     
     private init() {}
     
-    func createExpedition(startDate: Date, endDate: Date, expeditionName: String, expeditionType: String, mainGoal: String, path: String) {
+    func createExpedition(startDate: Date, endDate: Date, expeditionName: String, expeditionType: String, mainGoal: String, path: String, project: Project) {
         
         let expedition = Expedition(context: context)
         
@@ -24,6 +24,8 @@ final class ExpeditionDataManger {
         expedition.expeditionName = expeditionName
         expedition.mainGoal = mainGoal
         expedition.path = path
+        expedition.expeditionType = expeditionType
+        expedition.expeditionToProject = project
         
         MainDataManager.shared.saveContext()
     }

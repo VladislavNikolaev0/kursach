@@ -14,6 +14,7 @@ protocol ExpeditionCellDelegate: AnyObject {
 final class ExpeditionCell: NSView {
     
     weak var deleaget: ExpeditionCellDelegate?
+    var expedition: Expedition?
     
     private lazy var name: NSTextField = {
         let field = NSTextField(wrappingLabelWithString: "Название: ")

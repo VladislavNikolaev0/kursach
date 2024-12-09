@@ -14,6 +14,7 @@ protocol ProjectCellViewDelegate: AnyObject {
 final class ProjectCellView: NSView {
     
     weak var delegate: ProjectCellViewDelegate?
+    var project: Project?
 
     private lazy var mainGoal: NSTextField = {
         let field = NSTextField(wrappingLabelWithString: "Основная цель: ")
@@ -35,20 +36,6 @@ final class ProjectCellView: NSView {
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
-    
-//    private lazy var numberResearchesTeam: NSTextField = {
-//        let field = NSTextField(wrappingLabelWithString: "Team number: ")
-//        field.alignment = .right
-//        field.translatesAutoresizingMaskIntoConstraints = false
-//        return field
-//    }()
-//    
-//    private lazy var numberAnalystTeam: NSTextField = {
-//        let field = NSTextField(wrappingLabelWithString: "Team number: ")
-//        field.alignment = .right
-//        field.translatesAutoresizingMaskIntoConstraints = false
-//        return field
-//    }()
     
     private lazy var commonStack: NSStackView = {
         let stack = NSStackView()

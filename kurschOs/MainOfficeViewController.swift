@@ -180,6 +180,7 @@ class MainOfficeViewController: NSViewController {
             )
             
             newCellProject.delegate = self
+            newCellProject.project = projects[0]
             
             contentView.addSubview(newCellProject)
             
@@ -202,6 +203,7 @@ class MainOfficeViewController: NSViewController {
                     )
                     
                     cellProject.delegate = self
+                    cellProject.project = projects[i]
                     
                     contentView.addSubview(cellProject)
                     
@@ -255,6 +257,8 @@ extension MainOfficeViewController: ProjectCellViewDelegate {
     func didSelectCell(_ cell: ProjectCellView) {
         let vc = ProjectSpitVeiw()
         
+        MainDataManager.shared.project = cell.project
+
         guard let window = self.view.window else { return }
         
         window.contentViewController = vc

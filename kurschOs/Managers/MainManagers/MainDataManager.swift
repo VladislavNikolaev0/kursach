@@ -12,6 +12,7 @@ final class MainDataManager {
     static let shared = MainDataManager()
     
     var user: User?
+    var project: Project?
     
     private init() {}
     
