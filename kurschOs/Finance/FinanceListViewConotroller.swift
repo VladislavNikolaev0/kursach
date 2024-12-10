@@ -141,7 +141,13 @@ final class FinanceListViewController: NSViewController {
 extension FinanceListViewController: FinanceCellDelegate {
     
     func dedSelectCell(_ cell: FinanceCell) {
+        let vc = ChosenFinanceViewController()
         
+        MainDataManager.shared.finance = cell.finance
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
     }
 }
 

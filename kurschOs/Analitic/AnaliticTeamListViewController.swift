@@ -1,22 +1,20 @@
 //
-//  TeamListViewController.swift
+//  AnaliticTeamListViewController.swift
 //  kurschOs
 //
-//  Created by Ангел предохранитель on 04.12.2024.
+//  Created by Ангел предохранитель on 10.12.2024.
 //
 
 import Cocoa
 
-final class TeamListViewController: NSViewController {
-    
-//    private lazy var testTeam = TeamCell(expeditionName: "Down", type: "geoeg")
+final class AnaliticTeamListViewController: NSViewController {
     
     private var teams: [Team] = []
     
     private lazy var addTeamButton: NSButton = {
         let button = NSButton()
         button.image = NSImage(systemSymbolName: "plus", accessibilityDescription: nil)
-        button.bezelColor = NSColor.systemGreen
+        button.bezelColor = .systemGreen
         button.target = self
         button.action = #selector(addTeamButtonTapped)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -25,6 +23,7 @@ final class TeamListViewController: NSViewController {
     
     private lazy var verticalScrollView: NSScrollView = {
         let scroll = NSScrollView()
+        scroll.backgroundColor = .clear
         scroll.hasVerticalScroller = true
         scroll.hasHorizontalScroller = false
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +52,7 @@ final class TeamListViewController: NSViewController {
         view.addSubview(addTeamButton)
         view.addSubview(verticalScrollView)
         verticalScrollView.documentView = contentView
-        //view.addSubview(testTeam)
+        print(verticalScrollView.backgroundColor)
     }
     
     private func setupConstraints() {
@@ -76,36 +75,35 @@ final class TeamListViewController: NSViewController {
     
     private func fetchTeams() {
         
-        guard let expedtion = MainDataManager.shared.expedtion else { return }
+        guard let analitic = MainDataManager.shared.analitic else { return }
         
-        teams = TeamDataManager.shared.fetchAllTeamsByExpetion(expedition: expedtion)
+        teams = TeamDataManager.shared.fetchAllTeamsByAnalitic(analitic: analitic)
         
         if !teams.isEmpty {
             
-            var newTeamCell = TeamCell(
-                expeditionName: teams[0].teamName!,
+            var newAnaliticteamCell = AnaliticTeamCell(
+                teamName: teams[0].teamName!,
                 type: teams[0].teamType!
             )
             
-            newTeamCell.deleaget = self
-            //newTeamCell.team = teams[0]
+            newAnaliticteamCell.deleaget = self
             
-            contentView.addSubview(newTeamCell)
+            contentView.addSubview(newAnaliticteamCell)
             
             NSLayoutConstraint.activate([
                 
-                newTeamCell.topAnchor.constraint(equalTo: contentView.topAnchor),
-                newTeamCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-                newTeamCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-                newTeamCell.heightAnchor.constraint(equalToConstant: 100),
+                newAnaliticteamCell.topAnchor.constraint(equalTo: contentView.topAnchor),
+                newAnaliticteamCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                newAnaliticteamCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                newAnaliticteamCell.heightAnchor.constraint(equalToConstant: 100),
             ])
             
             if teams.count > 1 {
                 
                 for i in 1..<teams.count {
                     
-                    let cellTeam = TeamCell(
-                        expeditionName: teams[i].teamName!,
+                    let cellTeam = AnaliticTeamCell(
+                        teamName: teams[i].teamName!,
                         type: teams[i].teamType!
                     )
                     
@@ -116,43 +114,41 @@ final class TeamListViewController: NSViewController {
                     
                     NSLayoutConstraint.activate([
                         
-                        cellTeam.topAnchor.constraint(equalTo: newTeamCell.bottomAnchor),
+                        cellTeam.topAnchor.constraint(equalTo: newAnaliticteamCell.bottomAnchor),
                         cellTeam.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
                         cellTeam.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
                         cellTeam.heightAnchor.constraint(equalToConstant: 100),
                     ])
                     
-                    newTeamCell = cellTeam
+                    newAnaliticteamCell = cellTeam
                 }
             }
         }
     }
     
+    
     @objc
     private func addTeamButtonTapped() {
-        let vc = CreateTeamViewController()
-
-        guard let expedition = MainDataManager.shared.expedtion else { return }
-
-        vc.expedition = expedition
+        let vc = CreateAnalitcTeamViewController()
+        
+        guard let analitic = MainDataManager.shared.analitic else { return }
+        
+        vc.analitic = analitic
         vc.delegate = self
         
         self.presentAsModalWindow(vc)
     }
 }
 
-extension TeamListViewController: TeamCellDelegate {
+extension AnaliticTeamListViewController: AnaliticTeamCellDelegate {
     
-    func dedSelectCell(_ cell: TeamCell) {
-        let vc = ChosenTeamViewController()
+    func dedSelectCell(_ cell: AnaliticTeamCell) {
         
-        guard let window = self.view.window else { return }
-        
-        window.contentViewController = vc
     }
+
 }
 
-extension TeamListViewController: ModalDismissProtocol {
+extension AnaliticTeamListViewController: ModalDismissProtocol {
     
     func modalDismiss() {
         fetchTeams()

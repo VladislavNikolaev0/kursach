@@ -143,7 +143,13 @@ final class AnalyticalListViewController: NSViewController {
 extension AnalyticalListViewController: AnaliticCellDelegate {
     
     func dedSelectCell(_ cell: AnaliticCell) {
+        let vc = ChosenAnaliticViewController()
         
+        MainDataManager.shared.analitic = cell.analitic
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
     }
 }
 

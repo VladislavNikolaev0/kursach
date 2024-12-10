@@ -1,22 +1,20 @@
 //
-//  TeamListViewController.swift
+//  FinanceTeamListViewController.swift
 //  kurschOs
 //
-//  Created by Ангел предохранитель on 04.12.2024.
+//  Created by Ангел предохранитель on 10.12.2024.
 //
 
 import Cocoa
 
-final class TeamListViewController: NSViewController {
-    
-//    private lazy var testTeam = TeamCell(expeditionName: "Down", type: "geoeg")
+final class FinanceTeamListViewController: NSViewController {
     
     private var teams: [Team] = []
     
     private lazy var addTeamButton: NSButton = {
         let button = NSButton()
         button.image = NSImage(systemSymbolName: "plus", accessibilityDescription: nil)
-        button.bezelColor = NSColor.systemGreen
+        button.bezelColor = .systemGreen
         button.target = self
         button.action = #selector(addTeamButtonTapped)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -25,6 +23,7 @@ final class TeamListViewController: NSViewController {
     
     private lazy var verticalScrollView: NSScrollView = {
         let scroll = NSScrollView()
+        scroll.backgroundColor = .clear
         scroll.hasVerticalScroller = true
         scroll.hasHorizontalScroller = false
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +52,7 @@ final class TeamListViewController: NSViewController {
         view.addSubview(addTeamButton)
         view.addSubview(verticalScrollView)
         verticalScrollView.documentView = contentView
-        //view.addSubview(testTeam)
+        print(verticalScrollView.backgroundColor)
     }
     
     private func setupConstraints() {
@@ -76,36 +75,35 @@ final class TeamListViewController: NSViewController {
     
     private func fetchTeams() {
         
-        guard let expedtion = MainDataManager.shared.expedtion else { return }
+        guard let finance = MainDataManager.shared.finance else { return }
         
-        teams = TeamDataManager.shared.fetchAllTeamsByExpetion(expedition: expedtion)
+        teams = TeamDataManager.shared.fetchAllTeamsByFinance(finance: finance)
         
         if !teams.isEmpty {
             
-            var newTeamCell = TeamCell(
-                expeditionName: teams[0].teamName!,
+            var newFinanceCell = FinanceTeamCell(
+                teamName: teams[0].teamName!,
                 type: teams[0].teamType!
             )
             
-            newTeamCell.deleaget = self
-            //newTeamCell.team = teams[0]
+            newFinanceCell.deleaget = self
             
-            contentView.addSubview(newTeamCell)
+            contentView.addSubview(newFinanceCell)
             
             NSLayoutConstraint.activate([
                 
-                newTeamCell.topAnchor.constraint(equalTo: contentView.topAnchor),
-                newTeamCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-                newTeamCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-                newTeamCell.heightAnchor.constraint(equalToConstant: 100),
+                newFinanceCell.topAnchor.constraint(equalTo: contentView.topAnchor),
+                newFinanceCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                newFinanceCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                newFinanceCell.heightAnchor.constraint(equalToConstant: 100),
             ])
             
             if teams.count > 1 {
                 
                 for i in 1..<teams.count {
                     
-                    let cellTeam = TeamCell(
-                        expeditionName: teams[i].teamName!,
+                    let cellTeam = FinanceTeamCell(
+                        teamName: teams[i].teamName!,
                         type: teams[i].teamType!
                     )
                     
@@ -116,43 +114,41 @@ final class TeamListViewController: NSViewController {
                     
                     NSLayoutConstraint.activate([
                         
-                        cellTeam.topAnchor.constraint(equalTo: newTeamCell.bottomAnchor),
+                        cellTeam.topAnchor.constraint(equalTo: newFinanceCell.bottomAnchor),
                         cellTeam.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
                         cellTeam.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
                         cellTeam.heightAnchor.constraint(equalToConstant: 100),
                     ])
                     
-                    newTeamCell = cellTeam
+                    newFinanceCell = cellTeam
                 }
             }
         }
     }
     
+    
+    
     @objc
     private func addTeamButtonTapped() {
-        let vc = CreateTeamViewController()
-
-        guard let expedition = MainDataManager.shared.expedtion else { return }
-
-        vc.expedition = expedition
+        let vc = CreateFinanceTeamViewController()
+        
+        guard let finance = MainDataManager.shared.finance else { return }
+        
+        vc.finance = finance
         vc.delegate = self
         
         self.presentAsModalWindow(vc)
     }
 }
 
-extension TeamListViewController: TeamCellDelegate {
+extension FinanceTeamListViewController: FinanceTeamCellDelegate {
     
-    func dedSelectCell(_ cell: TeamCell) {
-        let vc = ChosenTeamViewController()
+    func didSelectCell(_ cell: FinanceTeamCell) {
         
-        guard let window = self.view.window else { return }
-        
-        window.contentViewController = vc
     }
 }
 
-extension TeamListViewController: ModalDismissProtocol {
+extension FinanceTeamListViewController: ModalDismissProtocol {
     
     func modalDismiss() {
         fetchTeams()
