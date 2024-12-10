@@ -9,8 +9,6 @@ import Cocoa
 
 final class ExpeditionNavigationController: NSViewController {
     
-    private var expedition: Expedition? = MainDataManager.shared.expedtion
-    
     private lazy var editButton: NSButton = {
         let button = NSButton()
         button.image = NSImage(systemSymbolName: "pencil", accessibilityDescription: nil)
@@ -32,7 +30,7 @@ final class ExpeditionNavigationController: NSViewController {
     }()
     
     private lazy var expeditonName: NSTextField = {
-        let field = NSTextField(wrappingLabelWithString: expedition!.expeditionName!)
+        let field = NSTextField(wrappingLabelWithString: "")
         field.font = NSFont.systemFont(ofSize: 20, weight: .heavy)
         field.alignment = .left
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -56,8 +54,16 @@ final class ExpeditionNavigationController: NSViewController {
     }
     
     private func setupUI() {
+        configure()
         setupHierarchy()
         setupConstraints()
+    }
+    
+    private func configure() {
+        
+        guard let expedition = MainDataManager.shared.expedtion else { return }
+        
+        expeditonName.stringValue = expedition.expeditionName!
     }
     
     private func setupHierarchy() {
