@@ -79,9 +79,9 @@ final class ExpeditionResultsController: NSViewController {
     }
     
     private func setupUI() {
-        configure()
-        setupHierarchy()
-        setupConstraints()
+//        configure()
+//        setupHierarchy()
+//        setupConstraints()
     }
     
     private func configure() {

@@ -15,7 +15,7 @@ final class PassportDataManger {
     
     private init() {}
     
-    func createPassowrdByReseacher(number: String, issuedBy: String, issuedDate: Date, reseacher: Researcher) {
+    func createPassowrdByReseacher(number: String, issuedBy: String, issuedDate: Date, reseacher: Researcher) -> Passport {
         
         let passport = Passport(context: context)
         
@@ -25,9 +25,11 @@ final class PassportDataManger {
         passport.passportToResearcher = reseacher
         
         MainDataManager.shared.saveContext()
+        
+        return passport
     }
     
-    func createPassowrdByAnalyst(number: String, issuedBy: String, issuedDate: Date, analyst: Analyst) {
+    func createPassowrdByAnalyst(number: String, issuedBy: String, issuedDate: Date, analyst: Analyst) -> Passport {
         
         let passport = Passport(context: context)
         
@@ -37,9 +39,11 @@ final class PassportDataManger {
         passport.passportToAnalyst = analyst
         
         MainDataManager.shared.saveContext()
+        
+        return passport
     }
     
-    func createPassowrdByAccountnatn(number: String, issuedBy: String, issuedDate: Date, accountant: Accountant) {
+    func createPassowrdByAccountnatn(number: String, issuedBy: String, issuedDate: Date, accountant: Accountant) -> Passport {
         
         let passport = Passport(context: context)
         
@@ -49,6 +53,8 @@ final class PassportDataManger {
         passport.passportToAccountant = accountant
         
         MainDataManager.shared.saveContext()
+        
+        return passport
     }
     
     func fetchPassportByResearcher(reseacher: Researcher) -> Passport? {

@@ -15,7 +15,7 @@ final class ResearcherDataManger {
     
     private init() {}
     
-    func createResearcher(firstName: String, lastName: String, birthDate: Date, driverLecence: String, position: String, team: Team) {
+    func createResearcher(firstName: String, lastName: String, birthDate: Date, driverLecence: String, position: String, team: Team) -> Researcher {
         
         let researcher = Researcher(context: context)
         
@@ -27,6 +27,8 @@ final class ResearcherDataManger {
         researcher.researcherToTeam = team
         
         MainDataManager.shared.saveContext()
+        
+        return researcher
     }
     
     func fetchAllResearchersByTeam(team: Team) -> [Researcher] {
@@ -85,7 +87,7 @@ final class ResearcherDataManger {
     func setPassportAndCard(passport: Passport, card: MedecineCard, team: Team, firstName: String, lastName: String) {
         
         let request: NSFetchRequest<Researcher> = Researcher.fetchRequest()
-        request.predicate = NSPredicate(format: "researcherToTeam == %@ AND firstName == %@ AND lastName == %@", team, firstName, lastName)
+        request.predicate = NSPredicate(format: "researcherToTeam == %@ AND fisrtName == %@ AND lastName == %@", team, firstName, lastName)
         
         do {
             let researcher = try context.fetch(request).first

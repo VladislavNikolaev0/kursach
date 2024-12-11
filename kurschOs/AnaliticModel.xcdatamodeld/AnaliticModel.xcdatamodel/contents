@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="AAnalitical" representedClassName="AAnalitical" syncable="YES" codeGenerationType="class">
+        <attribute name="analiticType" optional="YES" attributeType="String"/>
+        <attribute name="mainGoal" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="analiticalToAnaliticalResults" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AAnalitical" inverseName="analiticalToAnaliticalResults" inverseEntity="AAnalitical"/>
+        <relationship name="analiticalToProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AProject" inverseName="projectToAnalitical" inverseEntity="AProject"/>
+        <relationship name="analiticalToTeam" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ATeam" inverseName="teamToAnalitical" inverseEntity="ATeam"/>
+    </entity>
+    <entity name="AAnaliticalResults" representedClassName="AAnaliticalResults" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="results" optional="YES" attributeType="String"/>
+        <relationship name="analiticalResultsToAnalitical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AAnalitical"/>
+    </entity>
+    <entity name="AProject" representedClassName="AProject" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="mainGoal" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="projectToAnalitical" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AAnalitical" inverseName="analiticalToProject" inverseEntity="AAnalitical"/>
+    </entity>
+    <entity name="ATeam" representedClassName="ATeam" syncable="YES" codeGenerationType="class">
+        <attribute name="teamName" optional="YES" attributeType="String"/>
+        <attribute name="teamType" optional="YES" attributeType="String"/>
+        <relationship name="teamToAnalitical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AAnalitical" inverseName="analiticalToTeam" inverseEntity="AAnalitical"/>
+    </entity>
+</model>

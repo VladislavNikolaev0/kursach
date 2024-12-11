@@ -1,19 +1,21 @@
 //
-//  TeamCell.swift
+//  ExpeditionCell.swift
 //  kurschOs
 //
-//  Created by Ангел предохранитель on 04.12.2024.
+//  Created by Ангел предохранитель on 03.12.2024.
 //
 
 import Cocoa
 
-protocol TeamCellDelegate: AnyObject {
-    func dedSelectCell(_ cell: TeamCell)
+protocol ExpeditionCellDelegate: AnyObject {
+    func dedSelectCell(_ cell: ExpeditionCell)
 }
 
-final class TeamCell: NSView {
+final class ExpeditionCell: NSView {
     
-    weak var deleaget: TeamCellDelegate?
+    weak var deleaget: ExpeditionCellDelegate?
+    var expedition: Expedition?
+    var eexpedition: EExpedition?
     
     private lazy var name: NSTextField = {
         let field = NSTextField(wrappingLabelWithString: "Название: ")
@@ -21,11 +23,40 @@ final class TeamCell: NSView {
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
-
+    
+    private lazy var startDate: NSTextField = {
+        let field = NSTextField(wrappingLabelWithString: "Дата начала: ")
+        field.alignment = .right
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
+    private lazy var endDate: NSTextField = {
+        let field = NSTextField(wrappingLabelWithString: "Дата окончания: ")
+        field.alignment = .right
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
     private lazy var type: NSTextField = {
         let field = NSTextField(wrappingLabelWithString: "Тип экспедиции: ")
         field.alignment = .left
         field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
+    private lazy var goal: NSTextField = {
+        let field = NSTextField(wrappingLabelWithString: "Основная цель: ")
+        field.alignment = .left
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
+    private lazy var mainGoal: NSTextField = {
+        let field = NSTextField(wrappingLabelWithString: "")
+        field.alignment = .left
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.lineBreakStrategy = .standard
         return field
     }()
     
@@ -37,7 +68,7 @@ final class TeamCell: NSView {
         return stack
     }()
     
-    private lazy var typeStack: NSStackView = {
+    private lazy var dateStack: NSStackView = {
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.distribution = .fill
@@ -55,11 +86,14 @@ final class TeamCell: NSView {
         return stack
     }()
     
-    init(expeditionName: String, type: String) {
+    init(expeditionName: String, startDate: String, endDate: String, type: String, mainGoal: String) {
         super.init(frame: .zero)
         
         self.name.stringValue += expeditionName
+        self.startDate.stringValue += startDate
+        self.endDate.stringValue += endDate
         self.type.stringValue += type
+        self.mainGoal.stringValue = mainGoal
         
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -82,8 +116,6 @@ final class TeamCell: NSView {
         self.layer?.cornerRadius = 10
         self.layer?.borderColor = NSColor.white.cgColor
         
-        translatesAutoresizingMaskIntoConstraints = false
-        
         let gesture = NSClickGestureRecognizer(target: self, action: #selector(cellTapped))
         
         self.addGestureRecognizer(gesture)
@@ -92,9 +124,13 @@ final class TeamCell: NSView {
     private func setupHierarchy() {
         addSubview(commonStack)
         commonStack.addArrangedSubview(infoStack)
-        commonStack.addArrangedSubview(typeStack)
+        commonStack.addArrangedSubview(dateStack)
         infoStack.addArrangedSubview(name)
-        typeStack.addArrangedSubview(type)
+        infoStack.addArrangedSubview(type)
+        infoStack.addArrangedSubview(goal)
+        infoStack.addArrangedSubview(mainGoal)
+        dateStack.addArrangedSubview(startDate)
+        dateStack.addArrangedSubview(endDate)
     }
     
     private func setupConstraints() {
@@ -107,11 +143,11 @@ final class TeamCell: NSView {
             
             infoStack.topAnchor.constraint(equalTo: commonStack.topAnchor, constant: 10),
             infoStack.leadingAnchor.constraint(equalTo: commonStack.leadingAnchor, constant: 10),
-            infoStack.heightAnchor.constraint(equalToConstant: 30),
+            infoStack.heightAnchor.constraint(equalToConstant: 120),
 
-            typeStack.bottomAnchor.constraint(equalTo: commonStack.bottomAnchor, constant: -10),
-            typeStack.trailingAnchor.constraint(equalTo: commonStack.trailingAnchor, constant: -10),
-            typeStack.heightAnchor.constraint(equalToConstant: 30),
+            dateStack.bottomAnchor.constraint(equalTo: commonStack.bottomAnchor, constant: -10),
+            dateStack.trailingAnchor.constraint(equalTo: commonStack.trailingAnchor, constant: -10),
+            dateStack.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
     

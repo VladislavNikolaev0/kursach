@@ -15,6 +15,7 @@ final class ProjectCellView: NSView {
     
     weak var delegate: ProjectCellViewDelegate?
     var project: Project?
+    var eproject: EProject?
 
     private lazy var mainGoal: NSTextField = {
         let field = NSTextField(wrappingLabelWithString: "Основная цель: ")

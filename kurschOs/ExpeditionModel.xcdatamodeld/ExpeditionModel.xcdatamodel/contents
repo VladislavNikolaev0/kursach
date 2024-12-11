@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="EExpedition" representedClassName="EExpedition" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expeditionName" optional="YES" attributeType="String"/>
+        <attribute name="expeditionType" optional="YES" attributeType="String"/>
+        <attribute name="mainGoal" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="expeditionToExpeditionResluts" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="EExpeditionResults" inverseName="expeditionResultsToExpedition" inverseEntity="EExpeditionResults"/>
+        <relationship name="expeditionToProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EProject" inverseName="projectToExpedition" inverseEntity="EProject"/>
+        <relationship name="expeditionToTeam" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ETeam" inverseName="teamToExpedition" inverseEntity="ETeam"/>
+    </entity>
+    <entity name="EExpeditionResults" representedClassName="EExpeditionResults" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="results" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="expeditionResultsToExpedition" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EExpedition" inverseName="expeditionToExpeditionResluts" inverseEntity="EExpedition"/>
+    </entity>
+    <entity name="EProject" representedClassName="EProject" syncable="YES" codeGenerationType="class">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="mainGoal" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="projectToExpedition" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="EExpedition" inverseName="expeditionToProject" inverseEntity="EExpedition"/>
+    </entity>
+    <entity name="ETeam" representedClassName="ETeam" syncable="YES" codeGenerationType="class">
+        <attribute name="teamName" optional="YES" attributeType="String"/>
+        <attribute name="teamType" optional="YES" attributeType="String"/>
+        <relationship name="teamToExpedition" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EExpedition" inverseName="expeditionToTeam" inverseEntity="EExpedition"/>
+    </entity>
+</model>

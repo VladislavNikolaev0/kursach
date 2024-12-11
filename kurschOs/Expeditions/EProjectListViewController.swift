@@ -1,25 +1,15 @@
 //
-//  ViewController.swift
+//  ProjectListViewController.swift
 //  kurschOs
 //
-//  Created by Ангел предохранитель on 24.11.2024.
+//  Created by Ангел предохранитель on 11.12.2024.
 //
 
 import Cocoa
 
-protocol GetUserProtocol: AnyObject {
-    func broadcastUser(user: User)
-}
-
-
-protocol ModalDismissProtocol: AnyObject {
-    func modalDismiss()
-}
-
-class MainOfficeViewController: NSViewController {
+final class EProjectListViewController: NSViewController {
     
-    private var user: User? = MainDataManager.shared.user
-    private var projects: [Project] = []
+    private var eprojects: [EProject] = []
     
     private lazy var backButton: NSButton = {
         let button = NSButton()
@@ -114,7 +104,7 @@ class MainOfficeViewController: NSViewController {
             width: 1200,
             height: 600))
         
-        guard let user = self.user else { return }
+        guard let user = MainDataManager.shared.user else { return }
         
         infoUser.stringValue += user.fistName! + " " + user.lastName!
         emailLable.stringValue = user.email!
@@ -129,8 +119,6 @@ class MainOfficeViewController: NSViewController {
         infoView.addSubview(infoUser)
         infoView.addSubview(emailLable)
         verticalSrcollView.documentView = contentView
-        UserDataManager.shared.createUser(
-            email: "vladislav@mail.ru", firstName: "Владислав", lastName: "Николаев", login: "vladislav", password: "vladislav")
     }
     
     private func setupConstraints() {
@@ -169,19 +157,19 @@ class MainOfficeViewController: NSViewController {
     
     func fetchPojects() {
         
-        guard let user = user else { return }
+        eprojects = EProjectDataManager.shared.fetchAllProjects()
+        let projects = ProjectDataManager.shared.fetchAllProjectsByUser(user: MainDataManager.shared.user!)
         
-        projects = ProjectDataManager.shared.fetchAllProjectsByUser(user: user)
-        
-        if !projects.isEmpty {
+        if !eprojects.isEmpty {
             
             var newCellProject = ProjectCellView(
-                mainGoalText: projects[0].mainGoal!,
-                startDateText: "\(projects[0].startData!)",
-                endDateText: "\(projects[0].endDate!)"
+                mainGoalText: eprojects[0].mainGoal!,
+                startDateText: "\(eprojects[0].startDate!)",
+                endDateText: "\(eprojects[0].endDate!)"
             )
             
             newCellProject.delegate = self
+            newCellProject.eproject = eprojects[0]
             newCellProject.project = projects[0]
             
             contentView.addSubview(newCellProject)
@@ -194,17 +182,18 @@ class MainOfficeViewController: NSViewController {
                 newCellProject.heightAnchor.constraint(equalToConstant: 85),
             ])
             
-            if projects.count > 1 {
+            if eprojects.count > 1 {
                 
-                for i in 1..<projects.count {
+                for i in 1..<eprojects.count {
                     
                     let cellProject = ProjectCellView(
-                        mainGoalText: projects[i].mainGoal!,
-                        startDateText: "\(projects[i].startData!)",
-                        endDateText: "\(projects[i].endDate!)"
+                        mainGoalText: eprojects[i].mainGoal!,
+                        startDateText: "\(eprojects[i].startDate!)",
+                        endDateText: "\(eprojects[i].endDate!)"
                     )
                     
                     cellProject.delegate = self
+                    cellProject.eproject = eprojects[i]
                     cellProject.project = projects[i]
                     
                     contentView.addSubview(cellProject)
@@ -234,9 +223,9 @@ class MainOfficeViewController: NSViewController {
     
     @objc
     private func addProjectButtonTapped() {
-        let vc = CreateProjectViewController()
+        let vc = CreateEProjectViewController()
         
-        guard let user = user else { return }
+        guard let user = MainDataManager.shared.user else { return }
         
         vc.setUser(user: user)
         vc.delegate = self
@@ -254,31 +243,23 @@ class MainOfficeViewController: NSViewController {
     }
 }
 
-extension MainOfficeViewController: ProjectCellViewDelegate {
+extension EProjectListViewController: ProjectCellViewDelegate {
     
     func didSelectCell(_ cell: ProjectCellView) {
-        let vc = ProjectSpitVeiw()
+        let vc = EProjectSplitViewController()
         
+        MainExpeditonDataManager.shared.project = cell.eproject
         MainDataManager.shared.project = cell.project
-
+        
         guard let window = self.view.window else { return }
         
         window.contentViewController = vc
     }
-    
 }
 
-extension MainOfficeViewController: GetUserProtocol {
-    
-    func broadcastUser(user: User) {
-        self.user = user
-    }
-}
-
-extension MainOfficeViewController: ModalDismissProtocol {
+extension EProjectListViewController: ModalDismissProtocol {
     
     func modalDismiss() {
         fetchPojects()
     }
 }
-

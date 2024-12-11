@@ -15,7 +15,7 @@ final class MedecineCardDataManager {
     
     private init() {}
     
-    func createMedCard(allergies: String, chronicDeseases: String, heightPerson: Int, weightPerson: Double, medecineCheckup: Date) {
+    func createMedCard(allergies: String, chronicDeseases: String, heightPerson: Int, weightPerson: Double, medecineCheckup: Date) -> MedecineCard {
         
         let card = MedecineCard(context: context)
         
@@ -26,6 +26,8 @@ final class MedecineCardDataManager {
         card.medecineCheckup = medecineCheckup
         
         MainDataManager.shared.saveContext()
+        
+        return card
     }
     
     func fetchMedCard(researcher: Researcher) -> MedecineCard? {
@@ -73,7 +75,7 @@ final class MedecineCardDataManager {
     func setResearcher(researcher: Researcher, allergies: String, chronicDeseases: String, heightPerson: Int32) {
         
         let request: NSFetchRequest<MedecineCard> = MedecineCard.fetchRequest()
-        request.predicate = NSPredicate(format: "allergies == %@ AND chronicDeseases == %@ AND heightPerson == %@", allergies, chronicDeseases, heightPerson)
+        request.predicate = NSPredicate(format: "allergies == %@ AND chronicDeseases == %@", allergies, chronicDeseases)
         
         do {
             let card = try context.fetch(request).first

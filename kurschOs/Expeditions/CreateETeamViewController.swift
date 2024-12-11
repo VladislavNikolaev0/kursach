@@ -1,14 +1,15 @@
 //
-//  CreateTeamViewController.swift
+//  CreateETeamViewController.swift
 //  kurschOs
 //
-//  Created by Ангел предохранитель on 10.12.2024.
+//  Created by Ангел предохранитель on 11.12.2024.
 //
 
 import Cocoa
 
-final class CreateTeamViewController: NSViewController {
+final class CreateETeamViewController: NSViewController {
     
+    var eexpedition: EExpedition?
     var expedition: Expedition?
     
     weak var delegate: ModalDismissProtocol?
@@ -76,7 +77,7 @@ final class CreateTeamViewController: NSViewController {
             x: 0,
             y: 0,
             width: 400,
-            height: 1200
+            height: 800
         ))
     }
     
@@ -109,12 +110,14 @@ final class CreateTeamViewController: NSViewController {
         if !teamNameTextField.stringValue.isEmpty &&
             !teamTypeTextField.stringValue.isEmpty {
             
+            guard let eexpedition else { return }
             guard let expedition else { return }
             
-            TeamDataManager.shared.createTeamByExpedition(
+            ETeamDataManager.shared.createTeamByExpedition(
                 teamName: teamNameTextField.stringValue,
                 teamType: teamTypeTextField.stringValue,
-                expedition: expedition
+                expedition: expedition,
+                eexpedition: eexpedition
             )
             
             delegate?.modalDismiss()

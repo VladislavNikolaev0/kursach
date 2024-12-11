@@ -123,6 +123,12 @@ final class ChoiseInProjectContoller: NSViewController {
     @objc
     private func researchButtonTapped() {
         
+        let vc = EProjectListViewController()
+        
+        guard let window = self.view.window else { return }
+        
+        window.contentViewController = vc
+        
     }
     
     @objc

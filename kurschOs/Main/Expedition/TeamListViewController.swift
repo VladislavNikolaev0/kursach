@@ -88,7 +88,7 @@ final class TeamListViewController: NSViewController {
             )
             
             newTeamCell.deleaget = self
-            //newTeamCell.team = teams[0]
+            newTeamCell.team = teams[0]
             
             contentView.addSubview(newTeamCell)
             
@@ -110,7 +110,7 @@ final class TeamListViewController: NSViewController {
                     )
                     
                     cellTeam.deleaget = self
-                    //newTeamCell.team = teams[i]
+                    newTeamCell.team = teams[i]
                     
                     contentView.addSubview(cellTeam)
                     
@@ -145,6 +145,8 @@ extension TeamListViewController: TeamCellDelegate {
     
     func dedSelectCell(_ cell: TeamCell) {
         let vc = ChosenTeamViewController()
+        
+        MainDataManager.shared.team = cell.team
         
         guard let window = self.view.window else { return }
         

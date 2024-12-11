@@ -1,13 +1,13 @@
 //
-//  ProjectNavigationbarController.swift
+//  EProjectNavigationbarController.swift
 //  kurschOs
 //
-//  Created by Ангел предохранитель on 04.12.2024.
+//  Created by Ангел предохранитель on 11.12.2024.
 //
 
 import Cocoa
 
-final class ProjectNavigationbarController: NSViewController {
+final class EProjectNavigationbarController: NSViewController {
     
     private lazy var editButton: NSButton = {
         let button = NSButton()
@@ -36,8 +36,6 @@ final class ProjectNavigationbarController: NSViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    var swicher: ProjectContentProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,11 +77,7 @@ final class ProjectNavigationbarController: NSViewController {
     
     @objc
     private func editButtonTapped() {
-        let vc = ChosenExpeditionController()
-        
-        guard let window = self.view.window else { return }
-        
-        window.contentViewController = vc
+
     }
     
     @objc
@@ -93,7 +87,7 @@ final class ProjectNavigationbarController: NSViewController {
     
     @objc
     private func backButtonTapped() {
-        let vc = MainOfficeViewController()
+        let vc = EProjectListViewController()
         
         guard let window = self.view.window else { return }
         

@@ -1,27 +1,24 @@
 //
-//  MainDataManager.swift
+//  MainAnaliticDataManger.swift
 //  kurschOs
 //
-//  Created by Ангел предохранитель on 07.12.2024.
+//  Created by Ангел предохранитель on 11.12.2024.
 //
 
 import Cocoa
-import CoreData
 
-final class MainDataManager {
-    static let shared = MainDataManager()
+final class MainAnaliticDataManger {
     
-    var user: User?
-    var project: Project?
-    var expedtion: Expedition?
-    var analitic: Analitical?
-    var finance: FinanceModule?
-    var team: Team?
+    static let shared = MainAnaliticDataManger()
+    
+    var project: AProject?
+    var analitic: AAnalitical?
+    var team: ATeam?
     
     private init() {}
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Model")
+        let container = NSPersistentContainer(name: "AnaliticModel")
         container.loadPersistentStores { description, error in
             if let error = error as? NSError {
                 fatalError("!!!!Error get persistent container \(error)")
@@ -33,7 +30,7 @@ final class MainDataManager {
     }()
     
     var context: NSManagedObjectContext {
-        return persistentContainer.viewContext
+        persistentContainer.viewContext
     }
     
     func saveContext() {
@@ -46,14 +43,6 @@ final class MainDataManager {
                 let error = error as NSError
                 fatalError("!!!Error to save context \(error.localizedDescription) \(error.userInfo)")
             }
-        }
-    }
-    
-    func logDataPath() {
-        if let url = persistentContainer.persistentStoreCoordinator.persistentStores.first?.url {
-            print(url)
-        } else {
-            print("Can't get url db")
         }
     }
 }
